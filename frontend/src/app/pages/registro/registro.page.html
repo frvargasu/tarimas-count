@@ -1,0 +1,165 @@
+<ion-content [fullscreen]="true">
+  <div class="reg-wrap">
+
+    <!-- Progress bar -->
+    <div class="progress-bar">
+      <div class="step-item" [class.active]="step >= 1" [class.done]="step > 1">
+        <div class="step-circle">{{ step > 1 ? '✓' : '1' }}</div>
+        <span class="step-lbl">Usuario</span>
+      </div>
+      <div class="step-line" [class.done]="step > 1"></div>
+      <div class="step-item" [class.active]="step >= 2" [class.done]="step > 2">
+        <div class="step-circle">{{ step > 2 ? '✓' : '2' }}</div>
+        <span class="step-lbl">Turno</span>
+      </div>
+      <div class="step-line" [class.done]="step > 2"></div>
+      <div class="step-item" [class.active]="step >= 3">
+        <div class="step-circle">3</div>
+        <span class="step-lbl">PIN</span>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ STEP 1: Username -->
+    @if (step === 1) {
+      <div class="step-content">
+        <h2 class="step-title">Elige tu nombre</h2>
+        <p class="step-desc">Así te identificarán en el sistema</p>
+
+        <div class="field">
+          <div
+            class="input-row"
+            [class.valid]="usernameValido"
+            [class.invalid]="username.length > 0 && !usernameValido"
+          >
+            <input
+              type="text"
+              [(ngModel)]="username"
+              placeholder="ej: ops-norte"
+              autocomplete="off"
+              autocorrect="off"
+              spellcheck="false"
+              maxlength="30"
+            />
+          </div>
+        </div>
+
+        <div class="validaciones">
+          @for (v of validaciones; track v.texto) {
+            <span
+              class="tag"
+              [class.tag-ok]="v.ok"
+              [class.tag-err]="!v.ok && username.length > 0"
+            >{{ v.ok ? '✓' : '·' }} {{ v.texto }}</span>
+          }
+        </div>
+
+        <div class="sugerencias">
+          <p class="sug-label">Sugerencias</p>
+          <div class="chips">
+            @for (s of sugerencias; track s) {
+              <button type="button" class="chip" (click)="usarSugerencia(s)">{{ s }}</button>
+            }
+          </div>
+        </div>
+
+        @if (error) {
+          <p class="error-msg">{{ error }}</p>
+        }
+
+        <button type="button" class="cta" (click)="siguientePaso()" [disabled]="!usernameValido">
+          Continuar →
+        </button>
+      </div>
+    }
+
+    <!-- ═══════════════════════════════ STEP 2: Turno -->
+    @if (step === 2) {
+      <div class="step-content">
+        <h2 class="step-title">Tu turno habitual</h2>
+        <p class="step-desc">Puedes cambiarlo después en cualquier momento</p>
+
+        <div class="turno-cards">
+          @for (t of turnos; track t.valor) {
+            <button
+              type="button"
+              class="turno-card"
+              [class.selected]="turnoSeleccionado === t.valor"
+              (click)="turnoSeleccionado = t.valor"
+            >
+              <span class="t-emoji">{{ t.emoji }}</span>
+              <span class="t-label">{{ t.label }}</span>
+              <span class="t-horario">{{ t.horario }}</span>
+            </button>
+          }
+        </div>
+
+        <div class="info-box">
+          <span class="info-icon">ℹ️</span>
+          <p>La meta de tarimas varía según el turno. El sistema calculará tu productividad automáticamente.</p>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="cta-back" (click)="pasoPrevio()">← Volver</button>
+          <button type="button" class="cta flex-cta" (click)="siguientePaso()">Continuar →</button>
+        </div>
+      </div>
+    }
+
+    <!-- ═══════════════════════════════ STEP 3: PIN -->
+    @if (step === 3) {
+      <div class="step-content">
+        <h2 class="step-title">
+          {{ pinEtapa === 'elegir' ? 'Elige tu PIN' : 'Confirma tu PIN' }}
+        </h2>
+        <p class="step-desc">
+          {{ pinEtapa === 'elegir' ? '4 dígitos para acceder rápido' : 'Repite el mismo PIN' }}
+        </p>
+
+        <div class="dots" [class.shake]="shake">
+          @for (i of dots; track i) {
+            <div class="dot" [class.filled]="pinActual.length > i"></div>
+          }
+        </div>
+
+        @if (error) {
+          <p class="error-msg">{{ error }}</p>
+        }
+
+        <div class="numpad">
+          @for (key of numKeys; track $index) {
+            @if (key.num) {
+              <button
+                type="button"
+                class="key"
+                [class.key-del]="key.num === '⌫'"
+                (click)="presionarTecla(key.num)"
+                [disabled]="loading"
+              >
+                <span class="key-num">{{ key.num }}</span>
+                @if (key.letters) {
+                  <span class="key-letters">{{ key.letters }}</span>
+                }
+              </button>
+            } @else {
+              <div class="key-empty"></div>
+            }
+          }
+        </div>
+
+        @if (loading) {
+          <p class="loading-msg">Creando cuenta...</p>
+        }
+
+        <button type="button" class="cta-back" (click)="pasoPrevio()" [disabled]="loading">
+          ← Volver
+        </button>
+      </div>
+    }
+
+    <!-- Footer -->
+    <p class="link-row">
+      ¿Ya tienes cuenta?&nbsp;<a routerLink="/login">Inicia sesión →</a>
+    </p>
+
+  </div>
+</ion-content>

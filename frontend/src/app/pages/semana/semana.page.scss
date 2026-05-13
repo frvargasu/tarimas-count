@@ -1,0 +1,371 @@
+:host { display: block; }
+
+ion-content { --background: #0D0F14; }
+
+.semana-wrap {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 16px 100px;
+  color: #F0F2F7;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── Header ──────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.header-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #F0F2F7;
+}
+.week-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.week-range {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: #8B92A5;
+  letter-spacing: 0.5px;
+}
+.nav-arrow {
+  background: #13161D;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #F0F2F7;
+  font-size: 16px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+
+  &.nav-arrow-disabled { opacity: 0.3; cursor: not-allowed; }
+  &:not(.nav-arrow-disabled):active { background: #1A1E28; }
+}
+
+/* ── Stats row ───────────────────────────────── */
+.stats-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.stat-pill {
+  flex: 1;
+  background: #13161D;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.stat-val {
+  font-family: 'Space Mono', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: #F0F2F7;
+}
+.stat-lbl {
+  font-size: 10px;
+  color: #5A6072;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* ── Chart card ──────────────────────────────── */
+.chart-card {
+  background: #13161D;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.chart-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: #5A6072;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.chart-legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+
+  &.legend-c { background: #00E5A0; }
+  &.legend-h { background: #4D9EFF; }
+}
+.legend-txt {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: #5A6072;
+  margin-right: 6px;
+}
+
+/* ── Chart area ──────────────────────────────── */
+.chart-area {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  height: 100px;
+  position: relative;
+}
+.meta-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+  z-index: 1;
+}
+.chart-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+.bar-pair {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+}
+.bar-seg {
+  width: 9px;
+  border-radius: 2px 2px 0 0;
+  transform-origin: bottom;
+  animation: bar-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+
+  &.bar-carga {
+    background: #00E5A0;
+    &.bar-superado { box-shadow: 0 -4px 10px rgba(0, 229, 160, 0.5); }
+  }
+  &.bar-hauler {
+    background: #4D9EFF;
+    &.bar-superado { box-shadow: 0 -4px 10px rgba(77, 158, 255, 0.5); }
+  }
+  &.bar-libre {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+  }
+}
+.col-label {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: #5A6072;
+
+  &.col-label-hoy { color: #00E5A0; font-weight: 700; }
+}
+
+@keyframes bar-in {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+/* ── Skeletons ───────────────────────────────── */
+.skeleton-chart {
+  height: 148px;
+  background: #13161D;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  margin-bottom: 20px;
+  animation: shimmer 1.4s ease-in-out infinite alternate;
+}
+.skeleton-dia {
+  height: 88px;
+  background: #13161D;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  margin-bottom: 8px;
+  animation: shimmer 1.4s ease-in-out infinite alternate;
+}
+
+/* ── Day cards ───────────────────────────────── */
+.dias-lista { display: flex; flex-direction: column; gap: 0; }
+
+.dia-card {
+  background: #13161D;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 8px;
+  transition: border-color 0.2s;
+
+  &.dia-hoy   { border-color: rgba(0, 229, 160, 0.3); }
+  &.dia-libre {
+    border-style: dashed;
+    opacity: 0.55;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}
+
+/* Libre card */
+.libre-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: #5A6072;
+  letter-spacing: 2px;
+  flex: 1;
+  text-align: right;
+}
+
+/* Worked day */
+.dia-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.dia-head-left { display: flex; align-items: center; gap: 10px; }
+.dia-nombre {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: #F0F2F7;
+  letter-spacing: 1.5px;
+}
+.dia-fecha-txt { font-size: 12px; color: #8B92A5; }
+
+.turno-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: #8B92A5;
+  letter-spacing: 0.5px;
+}
+
+/* Mini bar rows */
+.mini-row { margin-bottom: 8px; &:last-of-type { margin-bottom: 0; } }
+.mini-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.mini-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+
+  &.mini-label-c { color: #00E5A0; }
+  &.mini-label-h { color: #4D9EFF; }
+}
+.mini-right { display: flex; align-items: center; gap: 8px; }
+.mini-nums {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: #5A6072;
+}
+.mini-track {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.mini-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+  min-width: 2px;
+
+  &.mini-fill-c { background: #00E5A0; }
+  &.mini-fill-h { background: #4D9EFF; }
+}
+.exceso-lbl {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: #FFB830;
+  margin-top: 3px;
+  display: block;
+}
+
+/* Estado badges */
+.estado-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border-radius: 20px;
+}
+.badge-superado { background: rgba(255, 184, 48, 0.12); color: #FFB830; }
+.badge-cumplido { background: rgba(0, 229, 160, 0.1);  color: #00E5A0; }
+.badge-bajo     { background: rgba(255, 77, 106, 0.1); color: #FF4D6A; }
+.badge-libre    { background: rgba(255, 255, 255, 0.06); color: #5A6072; }
+
+/* ── Bottom nav ──────────────────────────────── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: #13161D;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 50;
+}
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 0;
+  opacity: 0.4;
+
+  &.active { opacity: 1; }
+}
+.nav-icon { font-size: 20px; }
+.nav-lbl {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  color: #F0F2F7;
+  letter-spacing: 0.5px;
+}
+
+/* ── Animations ──────────────────────────────── */
+@keyframes shimmer {
+  from { opacity: 0.4; }
+  to   { opacity: 0.7; }
+}

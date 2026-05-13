@@ -1,0 +1,172 @@
+<ion-content [fullscreen]="true">
+<div class="semana-wrap">
+
+  <!-- ── Header ─────────────────────────────── -->
+  <div class="header">
+    <span class="header-title">SEMANA</span>
+    <div class="week-nav">
+      <button type="button" class="nav-arrow" (click)="semanaAnterior()">‹</button>
+      <span class="week-range">{{ semanaRangoLabel }}</span>
+      <button
+        type="button"
+        class="nav-arrow"
+        [class.nav-arrow-disabled]="!puedeIrSiguiente"
+        (click)="semanaSiguiente()"
+      >›</button>
+    </div>
+  </div>
+
+  <!-- ── Stats row ───────────────────────────── -->
+  <div class="stats-row">
+    <div class="stat-pill">
+      <span class="stat-val">{{ diasTrabajados }}</span>
+      <span class="stat-lbl">días trabajados</span>
+    </div>
+    <div class="stat-pill">
+      <span class="stat-val">{{ totalTarimasSemana }}</span>
+      <span class="stat-lbl">tarimas</span>
+    </div>
+    <div class="stat-pill">
+      <span class="stat-val">{{ metasCumplidas }}</span>
+      <span class="stat-lbl">metas</span>
+    </div>
+  </div>
+
+  <!-- ── Chart ────────────────────────────────── -->
+  @if (!isLoading) {
+    <div class="chart-card">
+      <div class="chart-header">
+        <span class="chart-title">Producción semanal</span>
+        <div class="chart-legend">
+          <span class="legend-dot legend-c"></span><span class="legend-txt">C</span>
+          <span class="legend-dot legend-h"></span><span class="legend-txt">H</span>
+        </div>
+      </div>
+
+      <div class="chart-area">
+        <!-- Meta reference line -->
+        <div class="meta-line" [style.bottom.px]="metaLineBottom"></div>
+
+        @for (dia of diasSemana; track dia.fecha) {
+          <div class="chart-col">
+            <div class="bar-pair">
+              @if (dia.esLibre) {
+                <div class="bar-seg bar-libre" style="height: 4px"></div>
+                <div class="bar-seg bar-libre" style="height: 4px"></div>
+              } @else {
+                <div
+                  class="bar-seg bar-carga"
+                  [class.bar-superado]="dia.estadoCarga === 'superado'"
+                  [style.height.px]="calcBarHeight(dia.totalCarga)"
+                ></div>
+                <div
+                  class="bar-seg bar-hauler"
+                  [class.bar-superado]="dia.estadoHauler === 'superado'"
+                  [style.height.px]="calcBarHeight(dia.totalHauler)"
+                ></div>
+              }
+            </div>
+            <span class="col-label" [class.col-label-hoy]="dia.esHoy">
+              {{ dia.diaNombre.charAt(0) }}
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ── Loading skeleton ────────────────────── -->
+  @if (isLoading) {
+    <div class="skeleton-chart"></div>
+  }
+
+  <!-- ── Day list ─────────────────────────────── -->
+  <div class="dias-lista">
+
+    @if (isLoading) {
+      @for (i of [1,2,3,4,5,6]; track i) {
+        <div class="skeleton-dia"></div>
+      }
+    }
+
+    @for (dia of diasSemana; track dia.fecha) {
+
+      @if (dia.esLibre) {
+        <!-- Día libre -->
+        <div class="dia-card dia-libre" [class.dia-hoy]="dia.esHoy">
+          <span class="dia-nombre">{{ dia.diaNombre }}</span>
+          <span class="dia-fecha-txt">{{ dia.diaNumero }} {{ dia.mesNombre }}</span>
+          <span class="libre-label">— DÍA LIBRE —</span>
+        </div>
+
+      } @else {
+        <!-- Día trabajado -->
+        <div class="dia-card" [class.dia-hoy]="dia.esHoy">
+          <div class="dia-head">
+            <div class="dia-head-left">
+              <span class="dia-nombre">{{ dia.diaNombre }}</span>
+              <span class="dia-fecha-txt">{{ dia.diaNumero }} {{ dia.mesNombre }}</span>
+            </div>
+            @if (dia.turno) {
+              <span class="turno-chip">{{ dia.turno }}</span>
+            }
+          </div>
+
+          <!-- Barra CARGA -->
+          <div class="mini-row">
+            <div class="mini-info">
+              <span class="mini-label mini-label-c">CARGA</span>
+              <div class="mini-right">
+                <span class="mini-nums">{{ dia.totalCarga }} / {{ dia.metaCarga }}</span>
+                <span [class]="badgeClass(dia.estadoCarga)">{{ estadoLabel(dia.estadoCarga) }}</span>
+              </div>
+            </div>
+            <div class="mini-track">
+              <div class="mini-fill mini-fill-c" [style.width.%]="clamp100(dia.pctCarga)"></div>
+            </div>
+            @if (dia.excesoCarga > 0) {
+              <span class="exceso-lbl">+{{ dia.excesoCarga }} sobre meta</span>
+            }
+          </div>
+
+          <!-- Barra HAULER -->
+          <div class="mini-row">
+            <div class="mini-info">
+              <span class="mini-label mini-label-h">HAULER</span>
+              <div class="mini-right">
+                <span class="mini-nums">{{ dia.totalHauler }} / {{ dia.metaHauler }}</span>
+                <span [class]="badgeClass(dia.estadoHauler)">{{ estadoLabel(dia.estadoHauler) }}</span>
+              </div>
+            </div>
+            <div class="mini-track">
+              <div class="mini-fill mini-fill-h" [style.width.%]="clamp100(dia.pctHauler)"></div>
+            </div>
+            @if (dia.excesoHauler > 0) {
+              <span class="exceso-lbl">+{{ dia.excesoHauler }} sobre meta</span>
+            }
+          </div>
+
+        </div>
+      }
+    }
+  </div>
+
+</div>
+
+<!-- ── Bottom nav ──────────────────────────── -->
+<div class="bottom-nav">
+  <button type="button" class="nav-item" (click)="irAHome()">
+    <span class="nav-icon">📊</span>
+    <span class="nav-lbl">Hoy</span>
+  </button>
+  <button type="button" class="nav-item active">
+    <span class="nav-icon">📅</span>
+    <span class="nav-lbl">Semana</span>
+  </button>
+  <button type="button" class="nav-item">
+    <span class="nav-icon">👤</span>
+    <span class="nav-lbl">Perfil</span>
+  </button>
+</div>
+
+</ion-content>

@@ -1,0 +1,199 @@
+:host { display: block; }
+
+ion-content { --background: #0D0F14; }
+
+.login-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 52px 24px 32px;
+  min-height: 100%;
+  color: #F0F2F7;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── Header ─────────────────────────────────── */
+.header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.icon-box {
+  font-size: 52px;
+  margin-bottom: 10px;
+}
+.brand {
+  font-family: 'Space Mono', monospace;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 8px;
+  color: #F0F2F7;
+  margin: 0 0 6px;
+}
+.subtitle {
+  font-size: 11px;
+  color: #5A6072;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ── Username field ──────────────────────────── */
+.field { width: 100%; margin-bottom: 28px; }
+
+.input-row {
+  display: flex;
+  align-items: center;
+  background: #13161D;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 0 16px;
+  transition: border-color 0.2s;
+
+  &:focus-within { border-color: #00E5A0; }
+}
+.field-icon {
+  font-size: 18px;
+  margin-right: 12px;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #F0F2F7;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  padding: 16px 0;
+
+  &::placeholder { color: #5A6072; }
+}
+
+/* ── PIN section ─────────────────────────────── */
+.pin-section {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.pin-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: #5A6072;
+  margin: 0 0 16px;
+}
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 6px;
+
+  &.shake { animation: shake 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
+}
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #5A6072;
+  background: transparent;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+
+  &.filled {
+    background: #00E5A0;
+    border-color: #00E5A0;
+    box-shadow: 0 0 10px rgba(0, 229, 160, 0.45);
+    transform: scale(1.15);
+  }
+}
+
+/* ── Error ───────────────────────────────────── */
+.error-msg {
+  color: #FF4D6A;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  margin: 4px 0 8px;
+  min-height: 20px;
+}
+
+/* ── Numpad ──────────────────────────────────── */
+.numpad {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.key {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #13161D;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 14px 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.12s, transform 0.1s;
+
+  &:active {
+    background: #1A1E28;
+    transform: scale(0.93);
+  }
+  &:disabled { opacity: 0.35; }
+  &.key-del  { background: transparent; border-color: transparent; }
+}
+.key-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 22px;
+  color: #F0F2F7;
+  line-height: 1;
+}
+.key-letters {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 9px;
+  color: #5A6072;
+  letter-spacing: 2px;
+  margin-top: 3px;
+}
+.key-empty { /* spacer */ }
+
+/* ── CTA button ──────────────────────────────── */
+.cta {
+  width: 100%;
+  background: #00E5A0;
+  color: #000;
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  margin-bottom: 20px;
+
+  &:disabled          { opacity: 0.3; cursor: not-allowed; }
+  &:not(:disabled):active { transform: scale(0.97); }
+}
+
+/* ── Footer link ─────────────────────────────── */
+.link-row {
+  font-size: 14px;
+  color: #8B92A5;
+  text-align: center;
+  margin: 0;
+
+  a { color: #4D9EFF; text-decoration: none; font-weight: 500; }
+}
+
+/* ── Shake animation ─────────────────────────── */
+@keyframes shake {
+  10%, 90%        { transform: translateX(-2px); }
+  20%, 80%        { transform: translateX(5px);  }
+  30%, 50%, 70%   { transform: translateX(-7px); }
+  40%, 60%        { transform: translateX(7px);  }
+}

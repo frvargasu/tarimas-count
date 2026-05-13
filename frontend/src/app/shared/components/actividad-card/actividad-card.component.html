@@ -1,0 +1,36 @@
+<div class="card" [class.card-cumple]="data.cumple">
+
+  <div class="card-header">
+    <span class="act-label">{{ data.actividad | uppercase }}</span>
+    <span class="badge" [class]="badgeClass">{{ data.estado }}</span>
+  </div>
+
+  <div class="ring-wrap">
+    <app-progress-ring
+      [porcentaje]="data.porcentaje"
+      [color]="ringColor"
+      [size]="144"
+      [strokeWidth]="13"
+    />
+    <div class="ring-center">
+      <span class="ring-pct">{{ data.porcentaje | number:'1.0-0' }}%</span>
+      <span class="ring-frac">{{ data.totalActual }}/{{ data.meta }}</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-val">{{ data.tarimasXHora | number:'1.1-1' }}</span>
+      <span class="stat-key">tar/hr</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">{{ data.proyeccion | number:'1.0-0' }}</span>
+      <span class="stat-key">proyección</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">{{ data.ritmoRequerido | number:'1.1-1' }}</span>
+      <span class="stat-key">req/hr</span>
+    </div>
+  </div>
+
+</div>
