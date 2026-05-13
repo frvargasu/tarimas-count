@@ -1,0 +1,91 @@
+<div class="modal-sheet">
+
+  <!-- Handle bar -->
+  <div class="modal-handle"></div>
+
+  <!-- Header -->
+  <div class="modal-header">
+    <span class="modal-title">REGISTRAR TARIMAS</span>
+    <button type="button" class="close-btn" (click)="cerrar()">✕</button>
+  </div>
+
+  <!-- Turno badge -->
+  <div class="turno-badge">{{ turnoActivo }}</div>
+
+  <!-- Actividad selector -->
+  <div class="actividad-row">
+    <button
+      type="button"
+      class="act-btn"
+      [class.act-carga-active]="actividadSeleccionada === 'carga'"
+      (click)="seleccionarActividad('carga')"
+    >
+      <span class="act-icon">📦</span>
+      <span class="act-name">CARGA</span>
+      <span class="act-meta">{{ metaRestanteCarga }} para meta</span>
+    </button>
+
+    <button
+      type="button"
+      class="act-btn"
+      [class.act-hauler-active]="actividadSeleccionada === 'hauler'"
+      (click)="seleccionarActividad('hauler')"
+    >
+      <span class="act-icon">🚜</span>
+      <span class="act-name">HAULER</span>
+      <span class="act-meta">{{ metaRestanteHauler }} para meta</span>
+    </button>
+  </div>
+
+  <!-- Cantidad display -->
+  <div class="cantidad-wrap">
+    <span class="cantidad-num" [class.cantidad-error]="cantidad > 500">
+      {{ cantidadStr || '0' }}
+    </span>
+    <span class="cantidad-unit">tarimas</span>
+    @if (cantidad > 500) {
+      <span class="cantidad-max">Máximo 500</span>
+    }
+  </div>
+
+  <!-- Numpad -->
+  <div class="numpad">
+    @for (key of numKeys; track $index) {
+      @if (key === '⌫') {
+        <button type="button" class="num-btn num-del" (click)="borrar()" [disabled]="isLoading">⌫</button>
+      } @else if (key === '') {
+        <div class="num-empty"></div>
+      } @else {
+        <button type="button" class="num-btn" (click)="presionarTecla(key)" [disabled]="isLoading">{{ key }}</button>
+      }
+    }
+  </div>
+
+  <!-- Offline note -->
+  @if (isOffline) {
+    <div class="offline-note">
+      📡 Sin conexión — se guardará local
+    </div>
+  }
+
+  <!-- Error -->
+  @if (errorMsg) {
+    <p class="error-msg">{{ errorMsg }}</p>
+  }
+
+  <!-- Confirm button -->
+  <button
+    type="button"
+    class="confirmar-btn"
+    [class.confirmar-active]="puedeConfirmar"
+    [disabled]="!puedeConfirmar || isLoading"
+    (click)="confirmar()"
+  >
+    @if (isLoading) {
+      <ion-spinner name="crescent" class="btn-spinner"></ion-spinner>
+    } @else {
+      {{ confirmLabel }}
+    }
+  </button>
+
+</div>

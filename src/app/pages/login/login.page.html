@@ -1,0 +1,79 @@
+<ion-content [fullscreen]="true">
+  <div class="login-wrap">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="icon-box">📦</div>
+      <h1 class="brand">DESPACHO</h1>
+      <p class="subtitle">sistema de productividad</p>
+    </div>
+
+    <!-- Username -->
+    <div class="field">
+      <div class="input-row">
+        <span class="field-icon">👤</span>
+        <input
+          type="text"
+          [(ngModel)]="username"
+          placeholder="Nombre de usuario"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+        />
+      </div>
+    </div>
+
+    <!-- PIN dots -->
+    <div class="pin-section">
+      <p class="pin-label">INGRESA TU PIN</p>
+      <div class="dots" [class.shake]="shake">
+        @for (i of dots; track i) {
+          <div class="dot" [class.filled]="pin.length > i"></div>
+        }
+      </div>
+    </div>
+
+    <!-- Error -->
+    @if (error) {
+      <p class="error-msg">{{ error }}</p>
+    }
+
+    <!-- Numpad -->
+    <div class="numpad">
+      @for (key of numKeys; track $index) {
+        @if (key.num) {
+          <button
+            type="button"
+            class="key"
+            [class.key-del]="key.num === '⌫'"
+            (click)="presionarTecla(key.num)"
+            [disabled]="loading"
+          >
+            <span class="key-num">{{ key.num }}</span>
+            @if (key.letters) {
+              <span class="key-letters">{{ key.letters }}</span>
+            }
+          </button>
+        } @else {
+          <div class="key-empty"></div>
+        }
+      }
+    </div>
+
+    <!-- CTA -->
+    <button
+      type="button"
+      class="cta"
+      (click)="submit()"
+      [disabled]="loading || !username.trim() || pin.length < 4"
+    >
+      {{ loading ? 'Verificando...' : 'ENTRAR' }}
+    </button>
+
+    <!-- Link -->
+    <p class="link-row">
+      ¿Primera vez?&nbsp;<a routerLink="/registro">Crear cuenta →</a>
+    </p>
+
+  </div>
+</ion-content>
