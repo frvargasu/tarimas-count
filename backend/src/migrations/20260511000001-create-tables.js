@@ -21,9 +21,9 @@ module.exports = {
         allowNull: false
       },
       turno_default: {
-        type: Sequelize.ENUM('AM-PM', 'NOCHE', 'DOMINGO'),
+        type: Sequelize.ENUM('Mañana', 'Tarde', 'Noche', 'Noche Domingo'),
         allowNull: false,
-        defaultValue: 'AM-PM'
+        defaultValue: 'Mañana'
       },
       activo: {
         type: Sequelize.BOOLEAN,
@@ -61,7 +61,7 @@ module.exports = {
         allowNull: false
       },
       turno: {
-        type: Sequelize.ENUM('AM-PM', 'NOCHE', 'DOMINGO'),
+        type: Sequelize.ENUM('Mañana', 'Tarde', 'Noche', 'Noche Domingo'),
         allowNull: false
       },
       actividad: {
