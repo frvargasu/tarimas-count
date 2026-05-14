@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Fondo oscuro redondeado (estilo app icon) -->
+  <rect width="512" height="512" rx="100" fill="#0D0F14"/>
+
+  <!-- PALLETS (3 apilados) -->
+  <!-- Pallet inferior -->
+  <rect x="80" y="400" width="352" height="18" rx="3" fill="#6A4F0E"/>
+  <rect x="84" y="382" width="344" height="18" rx="3" fill="#8B6914"/>
+  <rect x="88" y="364" width="336" height="18" rx="3" fill="#B08A2A"/>
+  <rect x="92" y="364" width="40" height="36" rx="2" fill="#6A4F0E"/>
+  <rect x="236" y="364" width="40" height="36" rx="2" fill="#6A4F0E"/>
+  <rect x="380" y="364" width="40" height="36" rx="2" fill="#6A4F0E"/>
+
+  <!-- Pallet medio -->
+  <rect x="96" y="348" width="320" height="16" rx="3" fill="#6A4F0E"/>
+  <rect x="100" y="332" width="312" height="16" rx="3" fill="#8B6914"/>
+  <rect x="104" y="316" width="304" height="16" rx="3" fill="#B08A2A"/>
+  <rect x="108" y="316" width="36" height="32" rx="2" fill="#6A4F0E"/>
+  <rect x="238" y="316" width="36" height="32" rx="2" fill="#6A4F0E"/>
+  <rect x="368" y="316" width="36" height="32" rx="2" fill="#6A4F0E"/>
+
+  <!-- Pallet superior -->
+  <rect x="112" y="300" width="288" height="16" rx="3" fill="#6A4F0E"/>
+  <rect x="116" y="284" width="280" height="16" rx="3" fill="#8B6914"/>
+  <rect x="120" y="268" width="272" height="16" rx="3" fill="#B08A2A"/>
+  <rect x="124" y="268" width="32" height="32" rx="2" fill="#6A4F0E"/>
+  <rect x="240" y="268" width="32" height="32" rx="2" fill="#6A4F0E"/>
+  <rect x="356" y="268" width="32" height="32" rx="2" fill="#6A4F0E"/>
+
+  <!-- CAPA ROJA (detrás del cuerpo) -->
+  <path d="M210 165 Q185 220 182 268 Q180 285 192 292 L212 286 Q200 255 205 210 Q210 185 224 168 Z" fill="#882222"/>
+  <path d="M302 165 Q327 220 330 268 Q332 285 320 292 L300 286 Q312 255 307 210 Q302 185 288 168 Z" fill="#882222"/>
+
+  <!-- PIERNAS -->
+  <rect x="216" y="230" width="36" height="58" rx="7" fill="#3A3F50"/>
+  <rect x="260" y="230" width="36" height="58" rx="7" fill="#3A3F50"/>
+  <!-- rodilleras doradas -->
+  <ellipse cx="234" cy="248" rx="14" ry="9" fill="#FFB830"/>
+  <ellipse cx="278" cy="248" rx="14" ry="9" fill="#FFB830"/>
+  <ellipse cx="234" cy="248" rx="9" ry="6" fill="#CC8800"/>
+  <ellipse cx="278" cy="248" rx="9" ry="6" fill="#CC8800"/>
+  <!-- botas -->
+  <rect x="212" y="283" width="44" height="20" rx="5" fill="#2A2E3A"/>
+  <rect x="256" y="283" width="44" height="20" rx="5" fill="#2A2E3A"/>
+
+  <!-- TORSO -->
+  <rect x="208" y="150" width="96" height="84" rx="10" fill="#2A2E3A"/>
+  <!-- pectorales -->
+  <ellipse cx="230" cy="172" rx="16" ry="13" fill="#3A3F50"/>
+  <ellipse cx="282" cy="172" rx="16" ry="13" fill="#3A3F50"/>
+  <!-- detalle dorado -->
+  <rect x="250" y="158" width="12" height="68" rx="3" fill="#CC8800"/>
+  <!-- abdomen -->
+  <rect x="210" y="195" width="92" height="11" rx="3" fill="#4A5068"/>
+  <rect x="210" y="210" width="92" height="11" rx="3" fill="#4A5068"/>
+  <!-- hombreras -->
+  <ellipse cx="208" cy="156" rx="16" ry="9" fill="#3A3F50"/>
+  <ellipse cx="304" cy="156" rx="16" ry="9" fill="#3A3F50"/>
+  <ellipse cx="208" cy="156" rx="16" ry="9" fill="none" stroke="#FFB830" stroke-width="2"/>
+  <ellipse cx="304" cy="156" rx="16" ry="9" fill="none" stroke="#FFB830" stroke-width="2"/>
+
+  <!-- BRAZO IZQUIERDO (levantado con hacha) -->
+  <rect x="180" y="110" width="26" height="64" rx="10" fill="#3A3F50"/>
+  <!-- mano -->
+  <ellipse cx="193" cy="175" rx="12" ry="10" fill="#C8845A"/>
+  <!-- HACHA DE GUERRA -->
+  <rect x="188" y="38" width="10" height="140" rx="4" fill="#CC8800"/>
+  <!-- hoja hacha izq -->
+  <path d="M188 38 Q168 58 172 82 Q178 100 193 94 Q198 76 194 58 Z" fill="#FFB830"/>
+  <!-- hoja hacha der -->
+  <path d="M198 38 Q218 58 214 82 Q208 100 193 94 Q188 76 192 58 Z" fill="#4A5068"/>
+  <!-- brillo hacha -->
+  <path d="M174 55 Q168 70 172 85" stroke="#FFE090" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+  <!-- BRAZO DERECHO (en la cadera) -->
+  <rect x="306" y="152" width="26" height="58" rx="10" fill="#3A3F50"/>
+  <ellipse cx="319" cy="211" rx="12" ry="10" fill="#C8845A"/>
+
+  <!-- CUELLO -->
+  <rect x="244" y="136" width="24" height="18" rx="5" fill="#C8845A"/>
+
+  <!-- CABEZA -->
+  <ellipse cx="256" cy="118" rx="30" ry="28" fill="#C8845A"/>
+  <ellipse cx="226" cy="118" rx="6" ry="8" fill="#A0673F"/>
+  <ellipse cx="286" cy="118" rx="6" ry="8" fill="#A0673F"/>
+
+  <!-- CASCO -->
+  <path d="M224 112 Q224 72 256 69 Q288 72 288 112 Z" fill="#1A1D26"/>
+  <!-- nasal -->
+  <rect x="252" y="84" width="8" height="42" rx="2" fill="#0D0F14"/>
+  <!-- cubremejillas -->
+  <path d="M224 112 Q220 128 224 138 Q230 146 238 136 Q228 124 226 112 Z" fill="#1A1D26"/>
+  <path d="M288 112 Q292 128 288 138 Q282 146 274 136 Q284 124 286 112 Z" fill="#1A1D26"/>
+  <!-- borde dorado -->
+  <path d="M224 112 Q224 72 256 69 Q288 72 288 112" stroke="#FFB830" stroke-width="3" fill="none"/>
+
+  <!-- PENACHO ROJO ÉPICO -->
+  <path d="M256 69 Q258 22 266 -2 Q270 -16 263 -26 Q259 -32 256 -26 Q253 -32 249 -26 Q242 -16 246 -2 Q254 22 256 69 Z" fill="#CC3333"/>
+  <path d="M240 76 Q236 38 242 16 Q246 2 240 -8 Q236 -4 234 8 Q230 24 236 50 Q240 62 240 76 Z" fill="#882222"/>
+  <path d="M272 76 Q276 38 270 16 Q266 2 272 -8 Q276 -4 278 8 Q282 24 276 50 Q272 62 272 76 Z" fill="#882222"/>
+
+  <!-- OJOS -->
+  <ellipse cx="246" cy="116" rx="5" ry="5" fill="#1A1D26"/>
+  <ellipse cx="266" cy="116" rx="5" ry="5" fill="#1A1D26"/>
+  <circle cx="248" cy="114" r="2" fill="white"/>
+  <circle cx="268" cy="114" r="2" fill="white"/>
+  <!-- cejas -->
+  <path d="M240 108 L252 112" stroke="#6A4020" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M260 112 L272 108" stroke="#6A4020" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- boca seria -->
+  <path d="M249 128 L263 128" stroke="#A0673F" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+  <!-- LÍNEA VERDE ABAJO -->
+  <rect x="80" y="460" width="352" height="3" rx="1" fill="#00E5A0"/>
+
+  <!-- TEXTO D -->
+  <text x="256" y="500" text-anchor="middle"
+    style="fill:#F0F2F7; font-family:monospace; font-size:32px; font-weight:700; letter-spacing:4px;">
+    DESPACHO
+  </text>
+</svg>

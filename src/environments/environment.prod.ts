@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://produccion-production-afd8.up.railway.app/api',
+  apiUrl: 'https://tarimas-count-production.up.railway.app/api',
 };
