@@ -12,14 +12,14 @@ import {
   Turno, Actividad, MetricasActividad, RegistroLocal, UsuarioInfo,
   METAS, HORARIOS_TURNO,
 } from '../../core/models';
-import { ActividadCardComponent }  from '../../shared/components/actividad-card/actividad-card.component';
+import { TripleRingComponent }     from '../../shared/components/progress-ring/progress-ring.component';
 import { RegistroModalComponent }  from '../../shared/components/registro-modal/registro-modal.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonContent, AsyncPipe, ActividadCardComponent],
+  imports: [IonContent, AsyncPipe, TripleRingComponent],
 })
 export class HomePage implements OnInit, OnDestroy {
   private readonly storage   = inject(StorageService);
@@ -44,6 +44,33 @@ export class HomePage implements OnInit, OnDestroy {
 
   private clockTimer:  ReturnType<typeof setInterval> | null = null;
   private offlineSub?: Subscription;
+
+  get pctOperativa(): number {
+    if (!this.metricas) return 0;
+    const totalActual   = this.metricas.carga.totalActual + this.metricas.hauler.totalActual;
+    const metaOperativa = this.metricas.carga.meta;
+    return metaOperativa > 0 ? Math.round((totalActual / metaOperativa) * 100) : 0;
+  }
+
+  get totalActualHoy(): number {
+    return (this.metricas?.carga.totalActual ?? 0) + (this.metricas?.hauler.totalActual ?? 0);
+  }
+
+  get totalMetaHoy(): number {
+    return this.metricas?.carga.meta ?? 0;
+  }
+
+  get totalHaulerHoy(): number {
+    return this.metricas?.hauler.totalActual ?? 0;
+  }
+
+  get pctHaulerVisual(): number {
+    if (!this.metricas) return 0;
+    const meta = this.metricas.carga.meta;
+    return meta > 0
+      ? Math.min(Math.round((this.metricas.hauler.totalActual / meta) * 100), 100)
+      : 0;
+  }
 
   get turnoInfo(): string {
     const h = HORARIOS_TURNO[this.turnoActivo];
@@ -90,6 +117,10 @@ export class HomePage implements OnInit, OnDestroy {
     void this.router.navigate(['/semana']);
   }
 
+  irAPerfil(): void {
+    void this.router.navigate(['/perfil']);
+  }
+
   async abrirModalRegistro(): Promise<void> {
     const modal = await this.modalCtrl.create({
       component:         RegistroModalComponent,
@@ -110,6 +141,10 @@ export class HomePage implements OnInit, OnDestroy {
     if (data?.registrado) {
       await this.cargarDatos();
     }
+  }
+
+  abrirModalCarro(): void {
+    // TODO: implementar modal de carro
   }
 
   async cargarDatos(): Promise<void> {
