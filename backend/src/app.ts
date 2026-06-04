@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes';
 import registrosRoutes from './routes/registros.routes';
+import registroCarroRoutes from './routes/registro-carro.routes';
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/registros', registrosRoutes);
+app.use('/api/registro-carro', registroCarroRoutes);
 
 app.get('/health', (_req: Request, res: Response) => {
   res.json({ ok: true, version: '1.0.0' });

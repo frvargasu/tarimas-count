@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { initUsuario } from './Usuario';
 import { initRegistro } from './Registro';
 import { initSyncQueue } from './SyncQueue';
+import { initRegistroCarro } from './RegistroCarro';
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ export const sequelize = process.env.DATABASE_URL
 export const Usuario = initUsuario(sequelize);
 export const Registro = initRegistro(sequelize);
 export const SyncQueue = initSyncQueue(sequelize);
+export const RegistroCarro = initRegistroCarro(sequelize);
 
 Usuario.hasMany(Registro, { foreignKey: 'usuario_id', onDelete: 'CASCADE' });
 Registro.belongsTo(Usuario, { foreignKey: 'usuario_id' });

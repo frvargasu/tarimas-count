@@ -1,6 +1,17 @@
 export type Turno = 'Mañana' | 'Tarde' | 'Noche' | 'Noche Domingo';
 export type Actividad = 'carga' | 'hauler';
 
+export interface RegistroCarroAttributes {
+  id?: number;
+  fase: number;
+  anden: number;
+  capacidad_carro: number;
+  num_locales: number;
+  comentario?: string | null;
+  created_at?: Date;
+  updated_at?: Date;
+}
+
 export interface UsuarioAttributes {
   id?: number;
   username: string;
