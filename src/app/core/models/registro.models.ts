@@ -32,8 +32,8 @@ export const HORARIOS_TURNO: Record<Turno, {
 };
 
 export const METAS: Record<Turno, Record<Actividad, number>> = {
-  'Mañana':        { carga: 135, hauler: 187 },
-  'Tarde':         { carga: 135, hauler: 187 },
+  'Mañana':        { carga: 159, hauler: 187 },
+  'Tarde':         { carga: 159, hauler: 187 },
   'Noche':         { carga: 141, hauler: 197 },
   'Noche Domingo': { carga: 102, hauler: 142 },
 };

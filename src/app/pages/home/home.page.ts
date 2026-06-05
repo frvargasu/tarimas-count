@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { IonContent, ModalController } from '@ionic/angular/standalone';
 import { firstValueFrom, Subscription } from 'rxjs';
+import confetti from 'canvas-confetti';
 
 import { StorageService } from '../../core/services/storage.service';
 import { ApiService }     from '../../core/services/api.service';
@@ -12,14 +13,14 @@ import {
   Turno, Actividad, MetricasActividad, RegistroLocal, UsuarioInfo,
   METAS, HORARIOS_TURNO,
 } from '../../core/models';
-import { ActividadCardComponent }  from '../../shared/components/actividad-card/actividad-card.component';
+import { TripleRingComponent }     from '../../shared/components/progress-ring/progress-ring.component';
 import { RegistroModalComponent }  from '../../shared/components/registro-modal/registro-modal.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonContent, AsyncPipe, ActividadCardComponent],
+  imports: [IonContent, AsyncPipe, TripleRingComponent],
 })
 export class HomePage implements OnInit, OnDestroy {
   private readonly storage   = inject(StorageService);
@@ -42,8 +43,36 @@ export class HomePage implements OnInit, OnDestroy {
   cargando        = true;
   isOfflineActual = false;
 
-  private clockTimer:  ReturnType<typeof setInterval> | null = null;
-  private offlineSub?: Subscription;
+  private clockTimer:      ReturnType<typeof setInterval> | null = null;
+  private offlineSub?:      Subscription;
+  private metaCargaCumplida = false;
+
+  get pctOperativa(): number {
+    if (!this.metricas) return 0;
+    const totalActual   = this.metricas.carga.totalActual + this.metricas.hauler.totalActual;
+    const metaOperativa = this.metricas.carga.meta;
+    return metaOperativa > 0 ? Math.round((totalActual / metaOperativa) * 100) : 0;
+  }
+
+  get totalActualHoy(): number {
+    return (this.metricas?.carga.totalActual ?? 0) + (this.metricas?.hauler.totalActual ?? 0);
+  }
+
+  get totalMetaHoy(): number {
+    return this.metricas?.carga.meta ?? 0;
+  }
+
+  get totalHaulerHoy(): number {
+    return this.metricas?.hauler.totalActual ?? 0;
+  }
+
+  get pctHaulerVisual(): number {
+    if (!this.metricas) return 0;
+    const meta = this.metricas.carga.meta;
+    return meta > 0
+      ? Math.min(Math.round((this.metricas.hauler.totalActual / meta) * 100), 100)
+      : 0;
+  }
 
   get turnoInfo(): string {
     const h = HORARIOS_TURNO[this.turnoActivo];
@@ -77,6 +106,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   async cambiarTurno(turno: Turno): Promise<void> {
     this.turnoActivo = turno;
+    this.metaCargaCumplida = false;
     this.storage.setTurnoActivo(turno);
     await this.cargarDatos();
   }
@@ -88,6 +118,10 @@ export class HomePage implements OnInit, OnDestroy {
 
   irASemana(): void {
     void this.router.navigate(['/semana']);
+  }
+
+  irAPerfil(): void {
+    void this.router.navigate(['/perfil']);
   }
 
   async abrirModalRegistro(): Promise<void> {
@@ -110,6 +144,10 @@ export class HomePage implements OnInit, OnDestroy {
     if (data?.registrado) {
       await this.cargarDatos();
     }
+  }
+
+  abrirModalCarro(): void {
+    void this.router.navigate(['/registro-carro']);
   }
 
   async cargarDatos(): Promise<void> {
@@ -135,6 +173,21 @@ export class HomePage implements OnInit, OnDestroy {
       .slice(0, 20);
     this.pendientes = await this.sync.contarPendientes(this.usuario.id);
     this.cargando   = false;
+
+    const cumpleAhora = this.metricas?.carga.cumple ?? false;
+    if (cumpleAhora && !this.metaCargaCumplida) {
+      this.lanzarConfeti();
+    }
+    this.metaCargaCumplida = cumpleAhora;
+  }
+
+  private lanzarConfeti(): void {
+    const colores = ['#00E5A0', '#92E82A', '#30D5C8', '#FFD700', '#FA3559', '#ffffff'];
+    confetti({ particleCount: 90, angle: 60,  spread: 70, origin: { x: 0,   y: 0.65 }, colors: colores });
+    confetti({ particleCount: 90, angle: 120, spread: 70, origin: { x: 1,   y: 0.65 }, colors: colores });
+    setTimeout(() => {
+      confetti({ particleCount: 140, spread: 110, origin: { x: 0.5, y: 0.4 }, colors: colores, gravity: 1.2 });
+    }, 350);
   }
 
   private actualizarHora(): void {
