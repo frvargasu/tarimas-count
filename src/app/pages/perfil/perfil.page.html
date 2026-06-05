@@ -1,0 +1,185 @@
+<ion-content [fullscreen]="true">
+<div class="perfil-wrap">
+
+  <!-- ── Header perfil ──────────────────────────────── -->
+  <div class="perfil-header">
+    <div class="avatar">{{ inicialUsuario }}</div>
+    <div class="user-info">
+      <span class="user-name">{{ usuario?.username }}</span>
+      <span class="user-turno">{{ turnoInfo }}</span>
+    </div>
+    <button type="button" class="btn-settings" (click)="logout()">↩</button>
+  </div>
+
+  <!-- ── Stats del mes ──────────────────────────────── -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-val stat-verde">{{ tarimasMes }}</span>
+      <span class="stat-lbl">tar. mes</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val stat-azul">{{ diasTrabajados }}</span>
+      <span class="stat-lbl">días trab.</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val stat-ambar">{{ metasCumplidas }}/{{ diasTrabajados }}</span>
+      <span class="stat-lbl">metas</span>
+    </div>
+  </div>
+
+  <!-- ── Calendario ─────────────────────────────────── -->
+  <div class="cal-card">
+
+    <div class="cal-nav">
+      <button type="button" class="cal-nav-btn" (click)="mesAnterior()">‹</button>
+      <span class="cal-mes-label">{{ nombreMes }}</span>
+      <button
+        type="button"
+        class="cal-nav-btn"
+        [class.cal-nav-disabled]="!puedeIrSiguiente"
+        (click)="mesSiguiente()"
+      >›</button>
+    </div>
+
+    <div class="cal-week-header">
+      @for (h of diasSemanaHeader; track h) {
+        <span class="cal-week-day">{{ h }}</span>
+      }
+    </div>
+
+    @if (cargando) {
+      <div class="cal-skeleton"></div>
+    } @else {
+      <div class="cal-grid">
+        @for (dia of diasCalendario; track dia.fecha) {
+          <div
+            class="cal-day"
+            [class.vacio]="!dia.esDelMes"
+            [class.futuro]="dia.esDelMes && dia.estado === 'vacio'"
+            [class.cumplido]="dia.esDelMes && dia.estado === 'cumplido'"
+            [class.parcial]="dia.esDelMes && dia.estado === 'parcial'"
+            [class.bajo]="dia.esDelMes && dia.estado === 'bajo'"
+            [class.libre]="dia.esDelMes && dia.estado === 'libre'"
+            [class.sin-marcar]="dia.esDelMes && dia.estado === 'sin_marcar'"
+            [class.hoy]="dia.esHoy"
+            [class.selected]="diaSeleccionado !== null && diaSeleccionado.fecha === dia.fecha"
+            (click)="seleccionarDia(dia)"
+          >
+            <span class="cal-day-num">{{ dia.diaNumero }}</span>
+            @if (dia.esDelMes && dia.estado === 'sin_marcar') {
+              <span class="cal-q">?</span>
+            }
+            @if (dia.tieneDatos) {
+              <span
+                class="cal-dot"
+                [class.dot-cumplido]="dia.estado === 'cumplido'"
+                [class.dot-parcial]="dia.estado === 'parcial'"
+                [class.dot-bajo]="dia.estado === 'bajo'"
+              ></span>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <div class="cal-legend">
+      <span class="leg-item"><span class="leg-dot leg-verde"></span>Meta</span>
+      <span class="leg-item"><span class="leg-dot leg-ambar"></span>Parcial</span>
+      <span class="leg-item"><span class="leg-dot leg-rojo"></span>Bajo</span>
+      <span class="leg-item"><span class="leg-dot leg-gris"></span>Sin datos</span>
+    </div>
+
+  </div>
+
+  <!-- ── Detalle día ─────────────────────────────────── -->
+  @if (diaSeleccionado) {
+    <div
+      class="detalle-card"
+      [class.detalle-cumplido]="diaSeleccionado.estado === 'cumplido'"
+      [class.detalle-parcial]="diaSeleccionado.estado === 'parcial'"
+      [class.detalle-bajo]="diaSeleccionado.estado === 'bajo'"
+    >
+      <div class="detalle-header">
+        <div class="detalle-header-left">
+          <span class="detalle-fecha">{{ fechaDetalleLabel }}</span>
+          @if (diaSeleccionado.turno) {
+            <span class="detalle-turno-badge">{{ diaSeleccionado.turno }}</span>
+          }
+        </div>
+        <button type="button" class="detalle-close" (click)="cerrarDetalle()">✕</button>
+      </div>
+
+      @if (diaSeleccionado.tieneDatos) {
+
+        <div class="detalle-row">
+          <div class="detalle-row-header">
+            <span class="det-label det-carga">CARGA</span>
+            <div class="det-right">
+              @if (pctCargaDia(diaSeleccionado) >= 100) {
+                <span class="badge-det cumplido">✓</span>
+              } @else {
+                <span class="badge-det bajo">↓</span>
+              }
+              <span class="det-nums">
+                {{ diaSeleccionado.totalCarga }} / {{ diaSeleccionado.metaCarga }}
+              </span>
+            </div>
+          </div>
+          <div class="det-track">
+            <div class="det-fill det-fill-carga" [style.width.%]="pctCargaDia(diaSeleccionado)"></div>
+          </div>
+        </div>
+
+        <div class="detalle-row">
+          <div class="detalle-row-header">
+            <span class="det-label det-hauler">HAULER</span>
+            <span class="det-nums">{{ diaSeleccionado.totalHauler }} tar</span>
+          </div>
+          <div class="det-track">
+            <div class="det-fill det-fill-hauler" [style.width.%]="pctHaulerDia(diaSeleccionado)"></div>
+          </div>
+        </div>
+
+        <div class="detalle-total">
+          <span class="total-label">Total del día</span>
+          <span class="total-val">{{ diaSeleccionado.totalOperativa }} tar</span>
+        </div>
+
+        <div class="detalle-actions">
+          <button type="button" class="det-btn">✏️ Agregar nota</button>
+          <button type="button" class="det-btn">📋 Ver registros</button>
+        </div>
+
+      } @else {
+
+        <div class="detalle-sin-datos">
+          <p class="sin-datos-msg">Sin registros para este día</p>
+          <div class="sin-datos-actions">
+            <button type="button" class="det-btn det-btn-outline">📅 Marcar como libre</button>
+            <button type="button" class="det-btn det-btn-primary">＋ Agregar producción</button>
+          </div>
+        </div>
+
+      }
+    </div>
+  }
+
+</div>
+
+<!-- ── Bottom nav ─────────────────────────────────── -->
+<div class="bottom-nav">
+  <button type="button" class="nav-item" (click)="irAHome()">
+    <span class="nav-icon">📊</span>
+    <span class="nav-lbl">Hoy</span>
+  </button>
+  <button type="button" class="nav-item" (click)="irASemana()">
+    <span class="nav-icon">📅</span>
+    <span class="nav-lbl">Semana</span>
+  </button>
+  <button type="button" class="nav-item active">
+    <span class="nav-icon">👤</span>
+    <span class="nav-lbl">Perfil</span>
+  </button>
+</div>
+
+</ion-content>

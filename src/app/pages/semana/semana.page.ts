@@ -234,6 +234,10 @@ export class SemanaPage implements OnInit {
     void this.router.navigate(['/home']);
   }
 
+  irAPerfil(): void {
+    void this.router.navigate(['/perfil']);
+  }
+
   /* ── Utils ─────────────────────────────────── */
 
   esDiaActual(fecha: string): boolean {

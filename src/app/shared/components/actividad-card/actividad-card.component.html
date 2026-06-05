@@ -6,12 +6,6 @@
   </div>
 
   <div class="ring-wrap">
-    <app-progress-ring
-      [porcentaje]="data.porcentaje"
-      [color]="ringColor"
-      [size]="144"
-      [strokeWidth]="13"
-    />
     <div class="ring-center">
       <span class="ring-pct">{{ data.porcentaje | number:'1.0-0' }}%</span>
       <span class="ring-frac">{{ data.totalActual }}/{{ data.meta }}</span>

@@ -1,13 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { DecimalPipe, UpperCasePipe } from '@angular/common';
 import { MetricasActividad } from '../../../core/models';
-import { ProgressRingComponent } from '../progress-ring/progress-ring.component';
 
 @Component({
   selector: 'app-actividad-card',
   templateUrl: './actividad-card.component.html',
   styleUrls: ['./actividad-card.component.scss'],
-  imports: [ProgressRingComponent, DecimalPipe, UpperCasePipe],
+  imports: [DecimalPipe, UpperCasePipe],
 })
 export class ActividadCardComponent {
   @Input({ required: true }) data!: MetricasActividad;
