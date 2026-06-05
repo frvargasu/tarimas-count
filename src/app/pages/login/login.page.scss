@@ -21,7 +21,8 @@ ion-content { --background: #0D0F14; }
   width: 160px;
   height: auto;
   margin-bottom: 10px;
-  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.4)) brightness(0) invert(1);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
 }
 
 .brand {
