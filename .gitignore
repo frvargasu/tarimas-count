@@ -5,6 +5,8 @@ node_modules/
 dist/
 www/
 .angular/
+/.angular/cache
+.sass-cache/
 
 # Environment & secrets
 .env
@@ -14,11 +16,29 @@ www/
 # Logs
 *.log
 npm-debug.log*
+yarn-error.log
+log.txt
 
 # OS
 .DS_Store
 Thumbs.db
+$RECYCLE.BIN/
 
 # IDE
-.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 .idea/
+.history/
+
+# Ionic / build
+/.ionic
+/platforms
+/plugins
+/tmp
+/out-tsc
+/.sourcemaps
+/.versions
+/coverage

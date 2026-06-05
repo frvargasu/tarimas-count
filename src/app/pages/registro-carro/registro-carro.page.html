@@ -1,0 +1,164 @@
+<ion-content [fullscreen]="true">
+  <div class="rc-wrap">
+
+    <!-- Header -->
+    <div class="rc-header">
+      <button type="button" class="btn-back" (click)="volver()">←</button>
+      <div class="rc-title-group">
+        <span class="rc-icon">🚛</span>
+        <h1 class="rc-title">Registro Carro</h1>
+      </div>
+    </div>
+
+    <!-- Confirmación -->
+    @if (confirmacion) {
+      <div class="banner-ok">
+        <span class="banner-check">✓</span> Registro guardado correctamente
+      </div>
+    }
+
+    <!-- Error general -->
+    @if (errorGeneral) {
+      <div class="banner-err">{{ errorGeneral }}</div>
+    }
+
+    <!-- Formulario -->
+    <form class="rc-form" (ngSubmit)="guardar()">
+
+      <!-- Fase -->
+      <div class="field-group" [class.has-error]="errors['fase']">
+        <label class="field-label">Fase <span class="req">*</span></label>
+        <div class="chip-row">
+          @for (f of fases; track f) {
+            <button
+              type="button"
+              class="opt-chip"
+              [class.active]="form.fase === f"
+              (click)="form.fase = f; errors['fase'] = ''"
+            >Fase {{ f }}</button>
+          }
+        </div>
+        @if (errors['fase']) {
+          <p class="field-error">{{ errors['fase'] }}</p>
+        }
+      </div>
+
+      <!-- Andén -->
+      <div class="field-group" [class.has-error]="errors['anden']">
+        <label class="field-label" for="anden">Andén <span class="req">*</span></label>
+        <input
+          id="anden"
+          type="number"
+          inputmode="numeric"
+          class="rc-input"
+          placeholder="Ej: 1045"
+          [(ngModel)]="form.anden"
+          name="anden"
+          min="1"
+          step="1"
+          (input)="errors['anden'] = ''"
+        />
+        @if (errors['anden']) {
+          <p class="field-error">{{ errors['anden'] }}</p>
+        }
+      </div>
+
+      <!-- Capacidad carro -->
+      <div class="field-group" [class.has-error]="errors['capacidad_carro']">
+        <label class="field-label">Capacidad carro (pallets) <span class="req">*</span></label>
+        <div class="chip-row wrap">
+          @for (c of capacidades; track c) {
+            <button
+              type="button"
+              class="opt-chip"
+              [class.active]="form.capacidad_carro === c"
+              (click)="form.capacidad_carro = c; errors['capacidad_carro'] = ''"
+            >{{ c }}</button>
+          }
+        </div>
+        @if (errors['capacidad_carro']) {
+          <p class="field-error">{{ errors['capacidad_carro'] }}</p>
+        }
+      </div>
+
+      <!-- Número de locales -->
+      <div class="field-group" [class.has-error]="errors['num_locales']">
+        <label class="field-label">Número de locales <span class="req">*</span></label>
+        <div class="chip-row">
+          @for (n of numLocalesOpts; track n) {
+            <button
+              type="button"
+              class="opt-chip"
+              [class.active]="form.num_locales === n"
+              (click)="form.num_locales = n; errors['num_locales'] = ''"
+            >{{ n }}</button>
+          }
+        </div>
+        @if (errors['num_locales']) {
+          <p class="field-error">{{ errors['num_locales'] }}</p>
+        }
+      </div>
+
+      <!-- Comentario -->
+      <div class="field-group">
+        <label class="field-label">Comentario <span class="optional">(opcional)</span></label>
+        <div class="chips-sugeridos">
+          @for (chip of chipsDisponibles; track chip) {
+            <button
+              type="button"
+              class="sugerido-chip"
+              [class.active]="isChipActivo(chip)"
+              (click)="toggleChip(chip)"
+            >{{ chip }}</button>
+          }
+        </div>
+        <textarea
+          class="rc-textarea"
+          placeholder="Texto adicional..."
+          [(ngModel)]="form.comentarioTexto"
+          name="comentarioTexto"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <!-- Botón guardar -->
+      <button
+        type="submit"
+        class="btn-guardar"
+        [disabled]="guardando"
+      >
+        {{ guardando ? 'Guardando...' : 'Guardar registro' }}
+      </button>
+
+    </form>
+
+    <!-- Lista de registros recientes -->
+    <div class="recent-section">
+      <p class="recent-title">REGISTROS RECIENTES</p>
+
+      @if (cargandoLista) {
+        <div class="loading-msg">Cargando...</div>
+      } @else if (registros.length === 0) {
+        <div class="empty-msg">Sin registros todavía</div>
+      } @else {
+        <div class="registro-list">
+          @for (r of registros; track r.id) {
+            <div class="registro-card">
+              <div class="rc-card-row">
+                <span class="rc-tag fase">F{{ r.fase }}</span>
+                <span class="rc-tag anden">Andén {{ r.anden }}</span>
+                <span class="rc-tag cap">{{ r.capacidad_carro }} pall</span>
+                <span class="rc-tag locales">{{ r.num_locales }} loc</span>
+                <span class="rc-fecha">{{ formatFecha(r.created_at) }}</span>
+              </div>
+              @if (r.comentario) {
+                <p class="rc-comentario">{{ r.comentario }}</p>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+  </div>
+</ion-content>

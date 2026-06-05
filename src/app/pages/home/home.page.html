@@ -1,0 +1,158 @@
+<ion-content [fullscreen]="true">
+
+  <!-- Offline banner -->
+  @if (isOffline$ | async) {
+    <div class="offline-banner">
+      <span class="offline-dot"></span>
+      SIN CONEXIÓN · {{ pendientes }} pendiente{{ pendientes !== 1 ? 's' : '' }}
+    </div>
+  }
+
+  <div class="home-wrap">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <p class="greeting">Hola, <strong>{{ usuario?.username }}</strong></p>
+        <p class="fecha">{{ fechaHoy }}</p>
+        <p class="turno-info">{{ turnoInfo }}</p>
+      </div>
+      <div class="header-right">
+        <span class="clock">{{ horaActual }}</span>
+        <button type="button" class="btn-logout" (click)="logout()">↩</button>
+      </div>
+    </div>
+
+    <!-- Turno selector -->
+    <div class="turno-bar">
+      @for (t of turnos; track t) {
+        <button
+          type="button"
+          class="turno-chip"
+          [class.active]="turnoActivo === t"
+          (click)="cambiarTurno(t)"
+        >{{ t }}</button>
+      }
+    </div>
+
+    <!-- Anillo triple + barras -->
+    @if (cargando) {
+      <div class="loading-state">
+        <div class="skeleton-ring"></div>
+      </div>
+    } @else if (metricas) {
+      <div class="triple-ring-section">
+
+        <div class="ring-container">
+          <app-triple-ring
+            [pctCarga]="metricas.carga.porcentaje"
+            [pctHauler]="pctHaulerVisual"
+            [pctOperativa]="pctOperativa"
+            [size]="130">
+          </app-triple-ring>
+          <div class="ring-center-text">
+            <div class="ring-pct">{{ pctOperativa }}%</div>
+            <div class="ring-sublabel">TOTAL</div>
+          </div>
+        </div>
+
+        <div class="ring-bars">
+          <div class="ring-bar-row">
+            <div class="ring-bar-header">
+              <span class="bar-label carga">CARGA</span>
+              <div class="bar-val-group">
+                @if (metricas.carga.porcentaje >= 100) {
+                  <span class="badge-meta cumplido">✓</span>
+                } @else {
+                  <span class="badge-meta bajo">↓</span>
+                }
+                <span class="bar-val">{{ metricas.carga.totalActual }}/{{ metricas.carga.meta }}</span>
+              </div>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill carga" [style.width.%]="metricas.carga.porcentaje"></div>
+            </div>
+          </div>
+
+          <div class="ring-bar-row">
+            <div class="ring-bar-header">
+              <span class="bar-label hauler">HAULER</span>
+              <span class="bar-val">{{ totalHaulerHoy }} tar</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill hauler" [style.width.%]="pctHaulerVisual"></div>
+            </div>
+          </div>
+
+          <div class="ring-bar-row">
+            <div class="ring-bar-header">
+              <span class="bar-label operativa">OPERATIVA</span>
+              <span class="bar-val">{{ totalActualHoy }}/{{ totalMetaHoy }}</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill operativa" [style.width.%]="pctOperativa"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    }
+
+    <!-- Botones de acción -->
+    <div class="btn-grid">
+      <button type="button" class="btn-tarimas" (click)="abrirModalRegistro()">
+        <span class="btn-text">＋ TARIMAS</span>
+      </button>
+      <button type="button" class="btn-carro" (click)="abrirModalCarro()">
+        <span class="btn-text">🚛 CARRO</span>
+      </button>
+    </div>
+
+    <!-- Feed -->
+    <div class="feed-section">
+      <p class="feed-title">HOY</p>
+
+      @if (registrosHoy.length === 0 && !cargando) {
+        <div class="feed-empty">
+          <p>Sin registros por ahora</p>
+          <p class="feed-empty-sub">Toca el botón para agregar tu primera tarima</p>
+        </div>
+      }
+
+      @for (r of registrosHoy; track r.uuid) {
+        <div class="feed-item" [class.feed-pending]="!r.sincronizado">
+          <div class="feed-left">
+            <span class="feed-act" [class.act-carga]="r.actividad === 'carga'" [class.act-hauler]="r.actividad === 'hauler'">
+              {{ r.actividad === 'carga' ? 'C' : 'H' }}
+            </span>
+            <div class="feed-info">
+              <span class="feed-tarimas">{{ r.tarimas }} tarima{{ r.tarimas !== 1 ? 's' : '' }}</span>
+              <span class="feed-hora">{{ r.hora }}</span>
+            </div>
+          </div>
+          @if (!r.sincronizado) {
+            <span class="feed-sync-icon">⏳</span>
+          }
+        </div>
+      }
+    </div>
+
+  </div>
+
+  <!-- Bottom nav -->
+  <div class="bottom-nav">
+    <button type="button" class="nav-item active">
+      <span class="nav-icon">📊</span>
+      <span class="nav-lbl">Hoy</span>
+    </button>
+    <button type="button" class="nav-item" (click)="irASemana()">
+      <span class="nav-icon">📅</span>
+      <span class="nav-lbl">Semana</span>
+    </button>
+    <button type="button" class="nav-item" (click)="irAPerfil()">
+      <span class="nav-icon">👤</span>
+      <span class="nav-lbl">Perfil</span>
+    </button>
+  </div>
+
+</ion-content>
