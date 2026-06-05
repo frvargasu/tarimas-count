@@ -1,9 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { IonContent } from '@ionic/angular/standalone';
 import { ApiService } from '../../core/services/api.service';
 import { StorageService } from '../../core/services/storage.service';
+
+const REMEMBER_KEY = 'despacho_remember';
 
 interface NumKey {
   num: string;
@@ -16,16 +18,29 @@ interface NumKey {
   styleUrls: ['login.page.scss'],
   imports: [IonContent, FormsModule, RouterLink],
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
   private readonly api     = inject(ApiService);
   private readonly storage = inject(StorageService);
   private readonly router  = inject(Router);
 
-  username = '';
-  pin      = '';
-  loading  = false;
-  error    = '';
-  shake    = false;
+  username    = '';
+  pin         = '';
+  loading     = false;
+  error       = '';
+  shake       = false;
+  recordarme  = false;
+
+  ngOnInit(): void {
+    try {
+      const saved = localStorage.getItem(REMEMBER_KEY);
+      if (saved) {
+        const { username, pin } = JSON.parse(saved) as { username: string; pin: string };
+        this.username   = username ?? '';
+        this.pin        = pin      ?? '';
+        this.recordarme = true;
+      }
+    } catch { /* ignora */ }
+  }
 
   readonly dots    = [0, 1, 2, 3];
   readonly numKeys: NumKey[] = [
@@ -42,6 +57,13 @@ export class LoginPage {
     { num: '0', letters: '+' },
     { num: '⌫', letters: '' },
   ];
+
+  toggleRecordarme(): void {
+    this.recordarme = !this.recordarme;
+    if (!this.recordarme) {
+      localStorage.removeItem(REMEMBER_KEY);
+    }
+  }
 
   presionarTecla(tecla: string): void {
     if (!tecla || this.loading) return;
@@ -61,7 +83,15 @@ export class LoginPage {
     this.loading = true;
     this.error   = '';
 
-    this.api.login({ username: this.username.trim(), pin: this.pin }).subscribe({
+    const usernameClean = this.username.trim();
+
+    if (this.recordarme) {
+      localStorage.setItem(REMEMBER_KEY, JSON.stringify({ username: usernameClean, pin: this.pin }));
+    } else {
+      localStorage.removeItem(REMEMBER_KEY);
+    }
+
+    this.api.login({ username: usernameClean, pin: this.pin }).subscribe({
       next: (res) => {
         this.storage.setToken(res.token);
         this.storage.setUsuario(res.usuario);

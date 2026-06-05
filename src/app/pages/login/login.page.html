@@ -1,15 +1,23 @@
 <ion-content [fullscreen]="true">
-  <div class="login-wrap">
 
-    <!-- Header -->
-    <div class="header">
+  <!-- Ola de cabecera -->
+  <div class="wave-header">
+    <div class="brand-area">
       <div class="icon-box">📦</div>
-      <h1 class="brand">DESPACHO</h1>
-      <p class="subtitle">sistema de productividad</p>
+      <h1 class="brand">Bienvenido</h1>
+      <p class="subtitle">DESPACHO · sistema de productividad</p>
     </div>
+    <svg class="wave-svg" viewBox="0 0 375 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,36 C60,72 160,4 280,42 C330,58 360,30 375,20 L375,72 L0,72 Z" fill="#0D0F14"/>
+    </svg>
+  </div>
+
+  <!-- Formulario -->
+  <div class="login-card">
 
     <!-- Username -->
     <div class="field">
+      <span class="field-label">Usuario</span>
       <div class="input-row">
         <span class="field-icon">👤</span>
         <input
@@ -25,12 +33,20 @@
 
     <!-- PIN dots -->
     <div class="pin-section">
-      <p class="pin-label">INGRESA TU PIN</p>
+      <span class="field-label">PIN</span>
       <div class="dots" [class.shake]="shake">
         @for (i of dots; track i) {
           <div class="dot" [class.filled]="pin.length > i"></div>
         }
       </div>
+    </div>
+
+    <!-- Recordarme -->
+    <div class="remember-row" (click)="toggleRecordarme()">
+      <div class="checkbox" [class.checked]="recordarme">
+        @if (recordarme) { <span class="check-mark">✓</span> }
+      </div>
+      <span class="remember-label">Recordar usuario y PIN</span>
     </div>
 
     <!-- Error -->
@@ -67,7 +83,7 @@
       (click)="submit()"
       [disabled]="loading || !username.trim() || pin.length < 4"
     >
-      {{ loading ? 'Verificando...' : 'ENTRAR' }}
+      {{ loading ? 'Verificando...' : 'Iniciar sesión' }}
     </button>
 
     <!-- Link -->
@@ -76,4 +92,5 @@
     </p>
 
   </div>
+
 </ion-content>
