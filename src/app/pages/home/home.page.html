@@ -35,62 +35,78 @@
       }
     </div>
 
-    <!-- Activity cards -->
+    <!-- Anillo triple + barras -->
     @if (cargando) {
       <div class="loading-state">
-        <div class="skeleton-card"></div>
-        <div class="skeleton-card"></div>
+        <div class="skeleton-ring"></div>
       </div>
     } @else if (metricas) {
-      <div class="cards-row">
-        <app-actividad-card [data]="metricas.carga" />
-        <app-actividad-card [data]="metricas.hauler" />
-      </div>
+      <div class="triple-ring-section">
 
-      <!-- Card totales del turno -->
-      <div class="total-card">
-        <div class="total-card-header">
-          <span class="total-card-title">Total del turno</span>
-          <span class="total-card-date">{{ fechaDisplay }}</span>
-        </div>
-
-        <div class="total-bars">
-          <div class="bar-row">
-            <div class="bar-info">
-              <span class="bar-label bar-carga">CARGA</span>
-              <span class="bar-nums">{{ metricas.carga.totalActual }} / {{ metricas.carga.meta }}</span>
-            </div>
-            <div class="bar-track">
-              <div class="bar-fill bar-fill-carga" [style.width.%]="metricas.carga.porcentaje"></div>
-            </div>
-          </div>
-
-          <div class="bar-row">
-            <div class="bar-info">
-              <span class="bar-label bar-hauler">HAULER</span>
-              <span class="bar-nums">{{ metricas.hauler.totalActual }} / {{ metricas.hauler.meta }}</span>
-            </div>
-            <div class="bar-track">
-              <div class="bar-fill bar-fill-hauler" [style.width.%]="metricas.hauler.porcentaje"></div>
-            </div>
+        <div class="ring-container">
+          <app-triple-ring
+            [pctCarga]="metricas.carga.porcentaje"
+            [pctHauler]="pctHaulerVisual"
+            [pctOperativa]="pctOperativa"
+            [size]="130">
+          </app-triple-ring>
+          <div class="ring-center-text">
+            <div class="ring-pct">{{ pctOperativa }}%</div>
+            <div class="ring-sublabel">TOTAL</div>
           </div>
         </div>
 
-        <div class="total-footer">
-          <span class="total-sum-lbl">Total tarimas hoy</span>
-          <span class="total-sum-val">
-            {{ metricas.carga.totalActual + metricas.hauler.totalActual }}
-            <span class="total-sum-unit">tar</span>
-          </span>
+        <div class="ring-bars">
+          <div class="ring-bar-row">
+            <div class="ring-bar-header">
+              <span class="bar-label carga">CARGA</span>
+              <div class="bar-val-group">
+                @if (metricas.carga.porcentaje >= 100) {
+                  <span class="badge-meta cumplido">✓</span>
+                } @else {
+                  <span class="badge-meta bajo">↓</span>
+                }
+                <span class="bar-val">{{ metricas.carga.totalActual }}/{{ metricas.carga.meta }}</span>
+              </div>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill carga" [style.width.%]="metricas.carga.porcentaje"></div>
+            </div>
+          </div>
+
+          <div class="ring-bar-row">
+            <div class="ring-bar-header">
+              <span class="bar-label hauler">HAULER</span>
+              <span class="bar-val">{{ totalHaulerHoy }} tar</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill hauler" [style.width.%]="pctHaulerVisual"></div>
+            </div>
+          </div>
+
+          <div class="ring-bar-row">
+            <div class="ring-bar-header">
+              <span class="bar-label operativa">OPERATIVA</span>
+              <span class="bar-val">{{ totalActualHoy }}/{{ totalMetaHoy }}</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill operativa" [style.width.%]="pctOperativa"></div>
+            </div>
+          </div>
         </div>
+
       </div>
     }
 
-    <!-- Register button -->
-    <button type="button" class="btn-registrar" (click)="abrirModalRegistro()">
-      <span class="btn-icon">＋</span>
-      <span class="btn-text">REGISTRAR TARIMAS</span>
-    </button>
+    <!-- Botones de acción -->
+    <div class="btn-grid">
+      <button type="button" class="btn-tarimas" (click)="abrirModalRegistro()">
+        <span class="btn-text">＋ TARIMAS</span>
+      </button>
+      <button type="button" class="btn-carro" (click)="abrirModalCarro()">
+        <span class="btn-text">🚛 CARRO</span>
+      </button>
+    </div>
 
     <!-- Feed -->
     <div class="feed-section">
@@ -133,7 +149,7 @@
       <span class="nav-icon">📅</span>
       <span class="nav-lbl">Semana</span>
     </button>
-    <button type="button" class="nav-item">
+    <button type="button" class="nav-item" (click)="irAPerfil()">
       <span class="nav-icon">👤</span>
       <span class="nav-lbl">Perfil</span>
     </button>

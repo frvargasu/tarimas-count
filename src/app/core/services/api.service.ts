@@ -11,6 +11,8 @@ import {
   RegistroPayload,
   RespuestaHoy,
   ResumenDia,
+  RegistroCarroPayload,
+  RegistroCarroItem,
 } from '../models';
 
 @Injectable({ providedIn: 'root' })
@@ -61,5 +63,13 @@ export class ApiService {
       '/registros/sync',
       { registros }
     );
+  }
+
+  crearRegistroCarro(data: RegistroCarroPayload): Observable<{ ok: boolean; registro: RegistroCarroItem }> {
+    return this.post<{ ok: boolean; registro: RegistroCarroItem }>('/registro-carro', data);
+  }
+
+  listarRegistrosCarro(): Observable<{ ok: boolean; registros: RegistroCarroItem[] }> {
+    return this.get<{ ok: boolean; registros: RegistroCarroItem[] }>('/registro-carro');
   }
 }

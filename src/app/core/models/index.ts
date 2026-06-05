@@ -16,3 +16,5 @@ export type {
 } from './registro.models';
 
 export { HORARIOS_TURNO, METAS } from './registro.models';
+
+export type { RegistroCarroPayload, RegistroCarroItem } from './registro-carro.models';

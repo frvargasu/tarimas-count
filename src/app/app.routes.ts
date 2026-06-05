@@ -21,6 +21,17 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'perfil',
+    loadComponent: () => import('./pages/perfil/perfil.page').then((m) => m.PerfilPage),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'registro-carro',
+    loadComponent: () =>
+      import('./pages/registro-carro/registro-carro.page').then((m) => m.RegistroCarroPage),
+    canActivate: [authGuard],
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
