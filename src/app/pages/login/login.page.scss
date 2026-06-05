@@ -17,10 +17,11 @@ ion-content { --background: #0D0F14; }
   text-align: center;
 }
 
-.icon-box {
-  font-size: 48px;
+.logo-img {
+  width: 160px;
+  height: auto;
   margin-bottom: 10px;
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.35));
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.4)) brightness(0) invert(1);
 }
 
 .brand {
