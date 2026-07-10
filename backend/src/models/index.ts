@@ -26,6 +26,9 @@ export const sequelize = process.env.DATABASE_URL
         port:    parseInt(process.env.DB_PORT || '3306', 10),
         dialect: 'mysql',
         logging: isProduction ? false : console.log,
+        dialectOptions: {
+          ssl: { rejectUnauthorized: false }
+        },
         pool: { max: 10, min: 0, acquire: 30000, idle: 10000 },
       }
     );
